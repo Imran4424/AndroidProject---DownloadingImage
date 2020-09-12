@@ -1,10 +1,19 @@
 package com.luminous.android.downloadingimage;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.AsyncTaskLoader;
+
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     ImageView imageView;
@@ -19,5 +28,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void download(View view) {
 
+    }
+
+    public class ImageDownloader extends AsyncTaskLoader<Bitmap> {
+
+        public ImageDownloader(@NonNull Context context) {
+            super(context);
+        }
+
+        @Nullable
+        @Override
+        public Bitmap loadInBackground(String... urls) throws MalformedURLException {
+            try {
+                URL url = new URL(urls[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+            } catch (Exception e) {
+
+            }
+
+            return null;
+        }
     }
 }
