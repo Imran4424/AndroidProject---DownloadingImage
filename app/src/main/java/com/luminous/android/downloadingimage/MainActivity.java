@@ -30,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void download(View view) {
+        ImageDownloader task = new ImageDownloader();
+        Bitmap myImage;
+        try {
+            myImage = task.loadInBackground();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -41,10 +49,14 @@ public class MainActivity extends AppCompatActivity {
             super(context);
         }
 
+        public ImageDownloader() {
+            super();
+        }
+
 
         @Nullable
         @Override
-        public Bitmap loadInBackground() throws MalformedURLException {
+        public Bitmap loadInBackground() {
             try {
                 URL url = new URL(urls[0]);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
