@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         Bitmap myImage;
         try {
             myImage = task.loadInBackground();
+            imageView.setImageBitmap(myImage);
         } catch (Exception e) {
             e.printStackTrace();
         }
