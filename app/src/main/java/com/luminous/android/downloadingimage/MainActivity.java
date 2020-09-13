@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -11,12 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.AsyncTaskLoader;
-import androidx.loader.content.Loader;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ImageView imageView;
@@ -30,9 +31,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void download(View view) {
-        ImageDownloader task = new ImageDownloader();
-        Bitmap myImage;
+        Log.d("tapped", "I am here");
         try {
+            ImageDownloader task = new ImageDownloader(this);
+            Bitmap myImage;
+
+            task.urls.add(getString(R.string.imageUrl));
             myImage = task.loadInBackground();
             imageView.setImageBitmap(myImage);
         } catch (Exception e) {
@@ -44,23 +48,19 @@ public class MainActivity extends AppCompatActivity {
 
     public class ImageDownloader extends AsyncTaskLoader<Bitmap> {
 
-        String[] urls;
+        List<String> urls = new ArrayList<String>();
 
         public ImageDownloader(@NonNull Context context) {
             super(context);
         }
 
-        public ImageDownloader() {
-            super();
-        }
-
-
         @Nullable
         @Override
         public Bitmap loadInBackground() {
             try {
-                URL url = new URL(urls[0]);
+                URL url = new URL(urls.get(0));
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                // happening error in following line
                 connection.connect();
 
                 InputStream inputStream = connection.getInputStream();
